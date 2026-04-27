@@ -412,15 +412,17 @@ body{
 
 /* Beyaz taşlar: krem + kalın siyah kenarlık */
 .sq .wpc{
-  color:#ffffff;
-  -webkit-text-stroke:0.5px #000;
-  filter:none;
+  color:#fff8ee;
+  -webkit-text-stroke:2.5px #1a1a1a;
+  paint-order:stroke fill;
+  filter:drop-shadow(0 2px 3px rgba(0,0,0,.6));
 }
 /* Siyah taşlar: koyu + ince beyaz kenarlık */
 .sq .bpc{
-  color:#000000;
-  -webkit-text-stroke:0.3px #fff;
-  filter:none;
+  color:#111111;
+  -webkit-text-stroke:1.5px rgba(255,255,255,.55);
+  paint-order:stroke fill;
+  filter:drop-shadow(0 2px 3px rgba(0,0,0,.5));
 }
 /* Terfi modalı */
 .pm-p .pc{font-size:2.6rem;}
@@ -511,6 +513,7 @@ body{
 .sq.pop .pc{animation:sq-pop .3s ease;}
 @keyframes chk-pulse{0%,100%{box-shadow:inset 0 0 0 3px rgba(220,40,40,0);}50%{box-shadow:inset 0 0 0 3px rgba(220,40,40,.9);}}
 .sq.chk{animation:chk-pulse .7s ease infinite;}
+</style>
 </head>
 <body data-board="classic">
 
@@ -1859,8 +1862,7 @@ function buildPzCoords(){
   }
 }
 
-/* Hook sounds into game moves */
-const _origFinMv = finMv;
+/* Hook sounds into game moves — done inline in finMv above */
 </script>
 
 <!-- ══ PUZZLE SCREEN ══ -->
@@ -1903,20 +1905,5 @@ const _origFinMv = finMv;
 
 <!-- TOAST -->
 <div id="toast"></div>
-
-<script>
-/* ══ PATCH finMv to emit sounds ══ */
-const _realFinMv=finMv;
-window.finMv=function(from,to,x,piece,cap,pr){
-  _realFinMv(from,to,x,piece,cap,pr);
-};
-
-// Override finMv inline to add sounds + pop
-const __origFinMv=finMv;
-Object.defineProperty(window,'finMv',{
-  get:()=>__origFinMv,
-  configurable:true
-});
-</script>
 </body>
 </html>
