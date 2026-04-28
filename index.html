@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ghess</title>
+<title>Ghess.Co</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
 /* ──────────────────────────── BOARD THEMES ──────────────────────── */
@@ -863,7 +863,7 @@ for(let i=0;i<18;i++){
 }
 
 /* ══ BOARD SWATCHES ══ */
-let selBoard = localStorage.getItem('ghess_board') || 'classic';
+let selBoard = localStorage.getItem('ghess.co_board') || 'classic';
 function buildSwatches(){
   let pk = document.getElementById('board-swatches'); pk.innerHTML='';
   BOARD_THEMES.forEach(b=>{
@@ -880,17 +880,17 @@ function buildSwatches(){
     wrap.appendChild(el); wrap.appendChild(nm); pk.appendChild(wrap);
   });
 }
-function applyBoard(id){ document.body.setAttribute('data-board',id); localStorage.setItem('ghess_board',id); }
+function applyBoard(id){ document.body.setAttribute('data-board',id); localStorage.setItem('ghess.co_board',id); }
 buildSwatches(); applyBoard(selBoard);
 
 /* ══════════════════════════════════════════════════
    AUTH & USER DATA
 ══════════════════════════════════════════════════ */
-let users = JSON.parse(localStorage.getItem('ghess_users') || '{}');
-let cu    = JSON.parse(localStorage.getItem('ghess_cu')    || 'null');
+let users = JSON.parse(localStorage.getItem('ghess.co_users') || '{}');
+let cu    = JSON.parse(localStorage.getItem('ghess.co_cu')    || 'null');
 
-const saveUsers = () => localStorage.setItem('ghess_users', JSON.stringify(users));
-const saveCU    = () => localStorage.setItem('ghess_cu',    JSON.stringify(cu));
+const saveUsers = () => localStorage.setItem('ghess.co_users', JSON.stringify(users));
+const saveCU    = () => localStorage.setItem('ghess.co_cu',    JSON.stringify(cu));
 
 function authTab(tab){
   document.querySelectorAll('.auth-tab').forEach((b,i)=>b.classList.toggle('active', (tab==='login'&&i===0)||(tab==='register'&&i===1)));
@@ -952,7 +952,7 @@ function guestLogin(){
 }
 
 function doLogout(){
-  cu=null; localStorage.removeItem('ghess_cu'); showSc('sc-login');
+  cu=null; localStorage.removeItem('ghess.co_cu'); showSc('sc-login');
 }
 
 // Auto-login
@@ -1726,7 +1726,7 @@ function openPuzzle(){
   pzBoard=pzPuzzle.board.map(r=>[...r]);
   pzDone=false; pzSolIdx=0;
   pzFlip=(pzPuzzle.turn==='b'); // if black plays, flip board
-  let lastSolved=localStorage.getItem('ghess_pz_date');
+  let lastSolved=localStorage.getItem('ghess.co_pz_date');
   let today=new Date().toDateString();
   let alreadySolved=lastSolved===today;
 
@@ -1736,7 +1736,7 @@ function openPuzzle(){
   document.getElementById('pz-status').textContent=alreadySolved?'✅ Bugün çözdün!':'';
   document.getElementById('pz-status').className='pz-status'+(alreadySolved?' ok':'');
   document.getElementById('pz-turn').textContent=(pzPuzzle.turn==='w'?'⬜ Beyaz':'⬛ Siyah')+' oynuyor';
-  let streak=parseInt(localStorage.getItem('ghess_pz_streak')||'0');
+  let streak=parseInt(localStorage.getItem('ghess.co_pz_streak')||'0');
   document.getElementById('pz-streak').innerHTML=`🔥 Seri: <b>${streak}</b>`;
 
   buildPzCoords();
@@ -1806,14 +1806,14 @@ function checkPzMove(from,to){
       // Puzzle complete!
       pzDone=true;
       let today=new Date().toDateString();
-      let lastDate=localStorage.getItem('ghess_pz_date');
+      let lastDate=localStorage.getItem('ghess.co_pz_date');
       let yesterday=new Date(Date.now()-86400000).toDateString();
-      let streak=parseInt(localStorage.getItem('ghess_pz_streak')||'0');
+      let streak=parseInt(localStorage.getItem('ghess.co_pz_streak')||'0');
       if(lastDate===today){/* already done */}
       else{
         if(lastDate===yesterday) streak++; else streak=1;
-        localStorage.setItem('ghess_pz_streak',streak);
-        localStorage.setItem('ghess_pz_date',today);
+        localStorage.setItem('ghess.co_pz_streak',streak);
+        localStorage.setItem('ghess.co_pz_date',today);
         // Give ELO
         if(cu&&!cu.guest){
           cu.elo=(cu.elo||0)+15;
